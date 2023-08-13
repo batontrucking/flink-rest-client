@@ -1,5 +1,6 @@
-import requests
+from flink_rest_client import config
 
+import requests
 
 class RestException(Exception):
     """
@@ -29,9 +30,23 @@ def _execute_rest_request(
     # If accepted_status_code is None then default value is set.
     if accepted_status_code is None:
         accepted_status_code = 200
-
+    
+    auth = None
+    if config.BASIC_AUTHENTICATION_USERNAME and config.BASIC_AUTHENTICATION_PASSWORD:
+        auth = requests.auth.HTTPBasicAuth(
+            config.BASIC_AUTHENTICATION_USERNAME,
+            config.BASIC_AUTHENTICATION_PASSWORD
+        )
+    
     response = requests.request(
-        method=http_method, url=url, files=files, params=params, data=data, json=json
+        method=http_method,
+        url=url,
+        files=files,
+        params=params,
+        data=data,
+        json=json,
+        verify=config.ROOT_CERTIFICATE,
+        auth=auth
     )
     if response.status_code == accepted_status_code:
         return response.json()

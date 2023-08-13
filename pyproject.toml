@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "flink-rest-client"
+version = "0.1.0"
+description = ""
+authors = ["Mathew Kellogg <2058114+mathkellogg@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "flink_rest_client"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+macsesh = "^0.3.1"
+requests = ">=2.25.1,<2.26.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

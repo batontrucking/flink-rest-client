@@ -1,6 +1,7 @@
 import requests
 
 from flink_rest_client.common import _execute_rest_request, RestException
+from flink_rest_client import config
 
 
 class JobmanagerClient:
@@ -57,7 +58,9 @@ class JobmanagerClient:
         str
             The content of the log file as a string
         """
-        response = requests.request(method="GET", url=f"{self.prefix}/logs/{log_file}")
+        auth = requests.auth.HTTPBasicAuth(config.BASIC_AUTHENTICATION_USERNAME, config.BASIC_AUTHENTICATION_PASSWORD)
+        response = requests.request(method="GET", url=f"{self.prefix}/logs/{log_file}",
+                                    verify=config.ROOT_CERTIFICATE, auth=auth)
         if response.status_code == 200:
             return response.content.decode()
         else:
